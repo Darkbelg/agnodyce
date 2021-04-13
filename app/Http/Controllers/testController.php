@@ -21,11 +21,11 @@ class testController extends Controller
         //     throw new Exception(sprintf('Please run "composer require google/apiclient:~2.0" in "%s"', __DIR__));
         // }
         // require_once __DIR__ . '/vendor/autoload.php';
-        
+
         $client = new Google_Client();
-        $client->setApplicationName('test');
-        $client->setDeveloperKey('AIzaSyCeRyYeYdU8Y4AkwCO-qka9dLeVBPwJo-Q');
-        
+        $client->setApplicationName(config("youtube.api.name"));
+        $client->setDeveloperKey(config("youtube.api.key"));
+
         //var_dump($client);
         //die();
         // Define service object for making API requests.
@@ -47,16 +47,16 @@ class testController extends Controller
         foreach ($response->items as $key => $item) {
             //dd($item);
             $videoIds[] = $item->id->videoId;
-            
+
             //echo '<a href="https://www.youtube.com/watch?v=' . $item->id->videoId . '"><img src="' . $item->snippet->thumbnails->high->url .'" alt=""></a>';
-            //dd($thumbnail);   
-        
+            //dd($thumbnail);
+
         }
 
         $queryParams = [
             'id' => implode(",",$videoIds)
         ];
-        
+
         $response = $service->videos->listVideos('snippet,contentDetails,statistics', $queryParams);
 
         foreach ($response->items as $key => $item) {

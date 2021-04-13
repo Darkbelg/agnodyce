@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\testController;
 /*
@@ -12,9 +13,7 @@ use App\Http\Controllers\testController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/test', [testController::class, 'index']);
+Route::view('/',"search.video");
+Route::view('/videos',"search.video");
+Route::view('/channels',"search.channel");
+Route::get('search',[VideoController::class,'index'])->name('search.index');
