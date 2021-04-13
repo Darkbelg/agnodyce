@@ -3,6 +3,15 @@
         <!-- main -->
         <div class="flex justify-center pt-20">
             <div>
+                <ul>
+                    <li v-for="error in errors">
+                        <ul>
+                            <li v-for="message in error">
+                                {{ message }}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
                 <!--                <search-location></search-location>-->
                 <div class="flex border border-gray-200 rounded-full p-4 shadow text-xl">
                     <div>🕵️‍</div>
@@ -46,6 +55,7 @@ export default {
             rows: [],
             dynamicInputs: [],
             selected: 'order',
+            errors: [],
             options: [
                 {text: 'Order', value: 'order'},
                 {text: 'Channel Id', value: 'channelId'},
@@ -91,8 +101,8 @@ export default {
 
             axios.get(searchQuery).then(response => {
                 this.searchResults = response.data.items;
-            }).catch(function (error) {
-                console.log(error);
+            }).catch(error => {
+                this.errors = error.response.data.errors;
             });
         },
         addInputSelected() {

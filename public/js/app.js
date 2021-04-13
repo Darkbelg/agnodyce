@@ -2151,6 +2151,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2159,6 +2168,7 @@ __webpack_require__.r(__webpack_exports__);
       rows: [],
       dynamicInputs: [],
       selected: 'order',
+      errors: [],
       options: [{
         text: 'Order',
         value: 'order'
@@ -2244,7 +2254,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(searchQuery).then(function (response) {
         _this.searchResults = response.data.items;
       })["catch"](function (error) {
-        console.log(error);
+        _this.errors = error.response.data.errors;
       });
     },
     addInputSelected: function addInputSelected() {
@@ -21849,6 +21859,28 @@ var render = function() {
     [
       _c("div", { staticClass: "flex justify-center pt-20" }, [
         _c("div", [
+          _c(
+            "ul",
+            _vm._l(_vm.errors, function(error) {
+              return _c("li", [
+                _c(
+                  "ul",
+                  _vm._l(error, function(message) {
+                    return _c("li", [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(message) +
+                          "\n                        "
+                      )
+                    ])
+                  }),
+                  0
+                )
+              ])
+            }),
+            0
+          ),
+          _vm._v(" "),
           _c(
             "div",
             {

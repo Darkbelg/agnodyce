@@ -106,4 +106,39 @@ class SearchRequest extends FormRequest
             ]
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'q.string' => 'search is required',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'q' => 'search',
+            'maxResults' => 'max results',
+            'channelId' => 'channel id',
+            'channelType' => 'channel type',
+            'eventType' => 'event type',
+            'locationRadius' => 'location radius',
+            'pageToken' => 'page token',
+            'publishedAfter' => 'published after',
+            'publishedBefore' => 'published before',
+            'regionCode' => 'region code',
+            'relevanceLanguage' => 'relevance language',
+            'safeSearch' => 'safe search',
+            'topicId' => 'topic id',
+            'videoCaption' => 'video caption',
+            'videoCategoryId' => 'video category id',
+            'videoDefinition' => 'video definition',
+            'videoDimension' => 'video dimension',
+            'videoDuration' => 'video duration',
+            'videoEmbeddable' => 'video embeddable',
+            'videoLicense' => 'video license',
+            'videoSyndicated' => 'video syndicated',
+            'videoType' => 'video type'
+        ];
+    }
 }

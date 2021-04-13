@@ -36,13 +36,13 @@
                 <div class="hidden sm:block sm:ml-6">
                     <div class="flex space-x-4">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                        <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Videos</a>
+                        <a href="{{route('video')}}" class="{{ request()->is('/') ? 'menu-btn-active' : 'menu-btn' }}" {{ request()->is('video') ? 'aria-current="page"' : '' }}>Videos</a>
 
-                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Channels</a>
+                        <a href="{{route('channel')}}" class="{{ request()->is('channels') ? 'menu-btn-active' : 'menu-btn' }}" {{ request()->is('channels') ? 'aria-current="page"' : '' }}>Channels</a>
 
-                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Playlists</a>
+                        <a href="{{route('playlist')}}" class="{{ request()->is('playlist') ? 'menu-btn-active' : 'menu-btn' }}" {{ request()->is('playlist') ? 'aria-current="page"' : '' }}>Playlists</a>
 
-                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">FAQ</a>
+                        <a href="{{route('faq')}}" class="{{ request()->is('faq') ? 'menu-btn-active' : 'menu-btn' }}" {{ request()->is('faq') ? 'aria-current="page"' : '' }}>FAQ</a>
                     </div>
                 </div>
             </div>
