@@ -1,25 +1,39 @@
 <template>
     <div>
-        <label for="search-safeSearch">Order</label>
-        <select id="search-safeSearch" name="search-safeSearch" v-model="optionDefault">
+        <label for="search-safeSearch">Safe Search</label>
+        <select id="search-safeSearch" name="search-safeSearch" v-model="inputVal">
             <option v-for="option in options" :value="option.value">
                 {{ option.text }}
             </option>
         </select>
-
+        <button @click="$emit('delete-row')">Delete</button>
     </div>
 </template>
 <script>
 export default {
+    props: {
+        value: {
+            default: 'moderate'
+        }
+    },
     data() {
         return {
-            optionDefault: 'moderate',
             options: [
                 {text: 'Moderate', value: 'moderate'},
                 {text: 'None', value: 'none'},
                 {text: 'Strict', value: 'strict'},
             ],
         };
+    },
+    computed: {
+        inputVal: {
+            get() {
+                return this.value;
+            },
+            set(val) {
+                this.$emit('input', val);
+            }
+        }
     }
 }
 </script>

@@ -24,12 +24,8 @@ class SearchRequest extends FormRequest
      */
     public function rules()
     {
-        // TODO Write validation rules location
-        // TODO Write validation rules locationRadius
-        // TODO Write validation rules
-        // TODO Write regex for regionCode, relevanceLanguage
         return [
-            'q' => 'string',
+            'q' => 'string|nullable',
             'type' => [
                 'string',
                 Rule::in(['channel', 'playlist', 'video'])

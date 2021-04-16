@@ -4,13 +4,10 @@
         <div class="flex justify-center pt-20">
             <div>
                 <!--                <search-location></search-location>-->
-                <div class="flex border border-gray-200 rounded-full p-4 shadow text-xl">
-                    <div>🕵️‍</div>
-                    <input type="text" name="search" v-model="search" class="w-full outline-none px-3">
-                    <div>🎤</div>
-                </div>
+                <search-q v-model="search"></search-q>
+
                 <div>
-                    <component v-for="(field,index) in fields" :is="field.type" :key="field.id"
+                    <component v-for="(field,index) in fields" :is="field.type" :key="field.id" v-model="field.value"
                                @delete-row="deleteThisRow(index)"></component>
                 </div>
                 <div>
@@ -48,8 +45,7 @@ export default {
             selected: 'order',
             options: [
                 {text: 'Order', value: 'order'},
-                {text: 'Video Duration', value: 'videoDuration'},
-                {text: 'Event Type', value: 'eventType'},
+                {text: 'Maximum Results', value: 'maxResults'},
                 {text: 'Location', value: 'location'},
                 {text: 'Location Radius', value: 'locationRadius'},
                 {text: 'Published After', value: 'publishedAfter'},
@@ -63,40 +59,77 @@ export default {
             count: 0,
         }
     },
+    mounted() {
+        if (window.location.search !== "") {
+            this.searchApi(location.origin + '/search' + window.location.search);
+
+            const urlParams = new URLSearchParams(window.location.search);
+
+            urlParams.forEach(function (value, key) {
+                if (key === 'type') {
+                    return;
+                }
+                if (key === 'q') {
+                    this.search = value;
+                    return;
+                }
+                if (key === 'publishedBefore' || key === 'publishedAfter') {
+                    var time = new Date(value);
+                    value = time.getFullYear() + "-" + ("0" + (time.getMonth() + 1)).slice(-2) + "-" + ("0" + time.getDate()).slice(-2);
+                }
+                this.fields.push({
+                    'type': 'search-' + key,
+                    'value': value.toString()
+                });
+            }, this);
+        }
+    },
     methods: {
         loadSearchResults() {
-            let searchQuery = location.origin + '/search?maxResults=9&q=' + this.search + '&type=channel';
+            let searchQuery = 'q=' + encodeURI(this.search) + '&type=channel';
             this.options.forEach(function (item, index) {
                 //console.log(document.getElementById('search-' + item.value));
                 if (document.getElementById('search-' + item.value)) {
                     let e = document.getElementById('search-' + item.value);
-
                     if (e.type === "date") {
                         searchQuery += "&" + item.value + "=" + e.value + "T00:00:00Z";
-                    } else {
-                        searchQuery += "&" + item.value + "=" + e.value;
+                        return;
                     }
-
+                    searchQuery += "&" + item.value + "=" + e.value;
                 }
-            })
-
-            axios.get(searchQuery).then(response => {
-                this.searchResults = response.data.items;
-            }).catch(function (error) {
-                console.log(error);
             });
+            if (!document.getElementById('search-maxResults')) {
+                searchQuery += "&maxResults=9"
+            }
+            this.updateUrl(location.pathname + '?' + searchQuery);
+
+            this.searchApi(location.origin + '/search?' + searchQuery);
+
         },
         addInputSelected() {
             if (document.getElementById('search-' + this.selected) === null) {
                 this.fields.push({
                     'type': 'search-' + this.selected,
                 });
-                console.log(this.fields);
             }
         },
         deleteThisRow: function (index) {
             this.fields.splice(index, 1);
-        }
+        },
+        updateUrl(url) {
+            history.pushState(null, null, url);
+        },
+        searchApi(searchUrl) {
+            axios.get(searchUrl).then(response => {
+                if (response.data.items.length !== 0) {
+                    this.searchResults = response.data.items;
+                    return;
+                }
+                this.searchResults = 0;
+            }).catch(error => {
+                this.errors = error.response.data.errors;
+            });
+        },
     }
 };
 </script>

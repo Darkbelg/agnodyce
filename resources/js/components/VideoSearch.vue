@@ -13,13 +13,9 @@
                     </li>
                 </ul>
                 <!--                <search-location></search-location>-->
-                <div class="flex border border-gray-200 rounded-full p-4 shadow text-xl">
-                    <div>🕵️‍</div>
-                    <input type="text" name="search" v-model="search" class="w-full outline-none px-3">
-                    <div>🎤</div>
-                </div>
+                <search-q v-model="search"></search-q>
                 <div>
-                    <component v-for="(field,index) in fields" :is="field.type" :key="field.id"
+                    <component v-for="(field,index) in fields" :is="field.type" :key="field.id" v-model="field.value"
                                @delete-row="deleteThisRow(index)"></component>
                 </div>
                 <div>
@@ -58,6 +54,7 @@ export default {
             errors: [],
             options: [
                 {text: 'Order', value: 'order'},
+                {text: 'Maximum Results', value: 'maxResults'},
                 {text: 'Channel Id', value: 'channelId'},
                 {text: 'Video Duration', value: 'videoDuration'},
                 {text: 'Event Type', value: 'eventType'},
@@ -82,9 +79,30 @@ export default {
             count: 0,
         }
     },
+    mounted() {
+        if (window.location.search !== "") {
+            this.searchApi(location.pathname + 'search' + window.location.search);
+
+            const urlParams = new URLSearchParams(window.location.search);
+
+            urlParams.forEach(function (value, key) {
+                if (key === 'type') {
+                    return;
+                }
+                if (key === 'q') {
+                    this.search = value;
+                    return;
+                }
+                this.fields.push({
+                    'type': 'search-' + key,
+                    'value': value
+                });
+            }, this);
+        }
+    },
     methods: {
         loadSearchResults() {
-            let searchQuery = location.pathname + 'search?maxResults=9&q=' + this.search + '&type=video';
+            let searchQuery = 'q=' + encodeURI(this.search) + '&type=video';
             this.options.forEach(function (item, index) {
                 //console.log(document.getElementById('search-' + item.value));
                 if (document.getElementById('search-' + item.value)) {
@@ -97,10 +115,22 @@ export default {
                     }
 
                 }
-            })
+            });
+            if (!document.getElementById('search-maxResults')) {
+                searchQuery += "&maxResults=9"
+            }
+            this.updateUrl(location.pathname + '?' + searchQuery);
 
-            axios.get(searchQuery).then(response => {
-                this.searchResults = response.data.items;
+            this.searchApi(location.pathname + 'search?' + searchQuery);
+
+        },
+        searchApi(searchUrl) {
+            axios.get(searchUrl).then(response => {
+                if (response.data.items.length !== 0) {
+                    this.searchResults = response.data.items;
+                } else {
+                    this.searchResults = 0;
+                }
             }).catch(error => {
                 this.errors = error.response.data.errors;
             });
@@ -110,12 +140,14 @@ export default {
                 this.fields.push({
                     'type': 'search-' + this.selected,
                 });
-                console.log(this.fields);
             }
         },
         deleteThisRow: function (index) {
             this.fields.splice(index, 1);
-        }
+        },
+        updateUrl(url) {
+            history.pushState(null, null, url);
+        },
     }
 };
 </script>

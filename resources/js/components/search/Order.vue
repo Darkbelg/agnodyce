@@ -1,7 +1,7 @@
 <template>
     <div>
         <label for="search-order">Order</label>
-        <select id="search-order" name="search-order" v-model="searchOrder">
+        <select id="search-order" name="search-order" v-model="inputVal">
             <option v-for="option in order" :value="option.value">
                 {{ option.text }}
             </option>
@@ -11,9 +11,13 @@
 </template>
 <script>
 export default {
+    props: {
+        value: {
+            default: "relevance"
+        }
+    },
     data() {
         return {
-            searchOrder: 'relevance',
             order: [
                 {text: 'Date', value: 'date'},
                 {text: 'Rating', value: 'rating'},
@@ -22,6 +26,16 @@ export default {
                 {text: 'View Count', value: 'viewCount'}
             ],
         };
+    },
+    computed: {
+        inputVal: {
+            get() {
+                return this.value;
+            },
+            set(val) {
+                this.$emit('input', val);
+            }
+        }
     }
 }
 </script>

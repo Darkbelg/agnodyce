@@ -16,6 +16,7 @@ Vue.component('search-video', require('./components/VideoSearch.vue').default);
 Vue.component('dynamic-search-fields', require('./components/DynamicSearchFields.vue').default);
 
 Vue.component('search-order',require('./components/search/Order.vue').default);
+Vue.component('search-q',require('./components/search/Q.vue').default);
 Vue.component('search-channelId',require('./components/search/ChannelId.vue').default);
 Vue.component('search-videoDuration',require('./components/search/VideoDuration.vue').default);
 Vue.component('search-eventType',require('./components/search/EventType.vue').default);

@@ -20,7 +20,7 @@ class VideoController extends Controller
     {
         $searchResults = (new Search())->listSearch('id,snippet', $request->validated());
 //        if (request()->wantsJson()) {
-            return response()->json($searchResults);
+        return response()->json($searchResults);
 //        }
         return response()->view('search.search', [
             'searchResults' => $searchResults

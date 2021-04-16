@@ -2,11 +2,25 @@
     <div>
         <label for="search-location">Coordinates lat and long for example: 37.42307,-122.08427</label>
         <div class="flex border border-gray-200 rounded-full p-4 shadow text-xl">
-            <input class="w-full outline-none px-3" id="search-location" name="search-location" type="text">
+            <input class="w-full outline-none px-3" v-model="inputVal" id="search-location" name="search-location" type="text">
         </div>
+        <button @click="$emit('delete-row')">Delete</button>
     </div>
 </template>
-<script></script>
+<script>
+export default {
+    props: ["value"],
+    computed: {
+        inputVal: {
+            get() {
+                return this.value;
+            },
+            set(val) {
+                this.$emit('input', val);
+            }
+        }
+    }
+}</script>
 <!--
 <template>
     <div id="search-location">
