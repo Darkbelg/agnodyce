@@ -1944,6 +1944,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1952,6 +1961,7 @@ __webpack_require__.r(__webpack_exports__);
       rows: [],
       dynamicInputs: [],
       selected: 'order',
+      errors: [],
       options: [{
         text: 'Order',
         value: 'order'
@@ -2031,7 +2041,7 @@ __webpack_require__.r(__webpack_exports__);
       });
 
       if (!document.getElementById('search-maxResults')) {
-        searchQuery += "&maxResults=9";
+        searchQuery += "&maxResults=45";
       }
 
       this.updateUrl(location.pathname + '?' + searchQuery);
@@ -2063,6 +2073,181 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this.errors = error.response.data.errors;
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlaylistSearch.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PlaylistSearch.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      search: "",
+      searchResults: [],
+      rows: [],
+      dynamicInputs: [],
+      selected: 'order',
+      errors: [],
+      options: [{
+        text: 'Order',
+        value: 'order'
+      }, {
+        text: 'Maximum Results',
+        value: 'maxResults'
+      }, {
+        text: 'Channel Id',
+        value: 'channelId'
+      }, {
+        text: 'Location',
+        value: 'location'
+      }, {
+        text: 'Location Radius',
+        value: 'locationRadius'
+      }, {
+        text: 'Published After',
+        value: 'publishedAfter'
+      }, {
+        text: 'Published Before',
+        value: 'publishedBefore'
+      }, {
+        text: 'Region Code',
+        value: 'regionCode'
+      }, {
+        text: 'Relevance Language',
+        value: 'relevanceLanguage'
+      }, {
+        text: 'Safe Search',
+        value: 'safeSearch'
+      }, {
+        text: 'Topic Id',
+        value: 'topicId'
+      }],
+      fields: [],
+      count: 0
+    };
+  },
+  mounted: function mounted() {
+    if (window.location.search !== "") {
+      this.searchApi(location.origin + '/search' + window.location.search);
+      var urlParams = new URLSearchParams(window.location.search);
+      urlParams.forEach(function (value, key) {
+        if (key === 'type') {
+          return;
+        }
+
+        if (key === 'q') {
+          this.search = value;
+          return;
+        }
+
+        this.fields.push({
+          'type': 'search-' + key,
+          'value': value
+        });
+      }, this);
+    }
+  },
+  methods: {
+    loadSearchResults: function loadSearchResults() {
+      var searchQuery = 'q=' + encodeURI(this.search) + '&type=playlist';
+      this.options.forEach(function (item, index) {
+        //console.log(document.getElementById('search-' + item.value));
+        if (document.getElementById('search-' + item.value)) {
+          var e = document.getElementById('search-' + item.value);
+
+          if (e.type === "date") {
+            searchQuery += "&" + item.value + "=" + e.value + "T00:00:00Z";
+          } else {
+            searchQuery += "&" + item.value + "=" + e.value;
+          }
+        }
+      });
+
+      if (!document.getElementById('search-maxResults')) {
+        searchQuery += "&maxResults=45";
+      }
+
+      this.updateUrl(location.pathname + '?' + searchQuery);
+      this.searchApi(location.origin + '/search?' + searchQuery);
+    },
+    searchApi: function searchApi(searchUrl) {
+      var _this = this;
+
+      axios.get(searchUrl).then(function (response) {
+        if (response.data.items.length !== 0) {
+          _this.searchResults = response.data.items;
+        } else {
+          _this.searchResults = 0;
+        }
+      })["catch"](function (error) {
+        _this.errors = error.response.data.errors;
+      });
+    },
+    addInputSelected: function addInputSelected() {
+      if (document.getElementById('search-' + this.selected) === null) {
+        this.fields.push({
+          'type': 'search-' + this.selected
+        });
+      }
+    },
+    deleteThisRow: function deleteThisRow(index) {
+      this.fields.splice(index, 1);
+    },
+    updateUrl: function updateUrl(url) {
+      history.pushState(null, null, url);
     }
   }
 });
@@ -2129,15 +2314,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['searchResults'],
   methods: {
-    getUrl: function getUrl(videoId, channelId) {
+    getUrl: function getUrl(videoId, channelId, playlistId) {
       if (videoId !== null) {
         return 'https://www.youtube.com/watch?v=' + videoId;
       }
 
-      return 'https://www.youtube.com/channel/' + channelId;
+      if (channelId !== null) {
+        return 'https://www.youtube.com/channel/' + channelId;
+      }
+
+      return 'https://www.youtube.com/playlist?list=' + playlistId;
+    },
+    getVideosUrlChannel: function getVideosUrlChannel(channelId) {
+      if (channelId === null) {
+        return;
+      }
+
+      return location.origin + '/?type=video&order=date&maxResults=45&channelId=' + channelId;
     }
   }
 });
@@ -2312,7 +2519,7 @@ __webpack_require__.r(__webpack_exports__);
       });
 
       if (!document.getElementById('search-maxResults')) {
-        searchQuery += "&maxResults=9";
+        searchQuery += "&maxResults=45";
       }
 
       this.updateUrl(location.pathname + '?' + searchQuery);
@@ -21960,6 +22167,185 @@ var render = function() {
         _c(
           "div",
           [
+            _c(
+              "ul",
+              _vm._l(_vm.errors, function(error) {
+                return _c("li", [
+                  _c(
+                    "ul",
+                    _vm._l(error, function(message) {
+                      return _c("li", [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(message) +
+                            "\n                        "
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c("search-q", {
+              model: {
+                value: _vm.search,
+                callback: function($$v) {
+                  _vm.search = $$v
+                },
+                expression: "search"
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              _vm._l(_vm.fields, function(field, index) {
+                return _c(field.type, {
+                  key: field.id,
+                  tag: "component",
+                  on: {
+                    "delete-row": function($event) {
+                      return _vm.deleteThisRow(index)
+                    }
+                  },
+                  model: {
+                    value: field.value,
+                    callback: function($$v) {
+                      _vm.$set(field, "value", $$v)
+                    },
+                    expression: "field.value"
+                  }
+                })
+              }),
+              1
+            ),
+            _vm._v(" "),
+            _c("div", [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.selected,
+                      expression: "selected"
+                    }
+                  ],
+                  attrs: { name: "dynamicInput", id: "dynamicInput" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selected = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                _vm._l(_vm.options, function(option) {
+                  return _c("option", { domProps: { value: option.value } }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(option.text) +
+                        "\n                    "
+                    )
+                  ])
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "mr-3 bg-gray-200 border border-gray-300 py-3 px-4 rounded hover:bg-gray-400 hover:border-gray-500",
+                  on: { click: _vm.addInputSelected }
+                },
+                [_vm._v("Add input\n                ")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mt-8 text-center" }, [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "mr-3 bg-gray-200 border border-gray-300 py-3 px-4 rounded hover:bg-gray-400 hover:border-gray-500",
+                  on: { click: _vm.loadSearchResults }
+                },
+                [_vm._v("Search\n                ")]
+              )
+            ])
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("search-results", { attrs: { searchResults: this.searchResults } })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlaylistSearch.vue?vue&type=template&id=754d7c45&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PlaylistSearch.vue?vue&type=template&id=754d7c45& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "flex justify-center pt-20" }, [
+        _c(
+          "div",
+          [
+            _c(
+              "ul",
+              _vm._l(_vm.errors, function(error) {
+                return _c("li", [
+                  _c(
+                    "ul",
+                    _vm._l(error, function(message) {
+                      return _c("li", [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(message) +
+                            "\n                        "
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              }),
+              0
+            ),
+            _vm._v(" "),
             _c("search-q", {
               model: {
                 value: _vm.search,
@@ -22113,15 +22499,6 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "p-6" }, [
                   _c(
-                    "h2",
-                    {
-                      staticClass:
-                        "tracking-widest text-xs title-font font-medium text-gray-500 mb-1"
-                    },
-                    [_vm._v("\n                            CATEGORY")]
-                  ),
-                  _vm._v(" "),
-                  _c(
                     "h1",
                     {
                       staticClass:
@@ -22143,12 +22520,13 @@ var render = function() {
                         attrs: {
                           href: _vm.getUrl(
                             searchResult.id.videoId,
-                            searchResult.id.channelId
+                            searchResult.id.channelId,
+                            searchResult.id.playlistId
                           )
                         }
                       },
                       [
-                        _vm._v(" View\n                                "),
+                        _vm._v(" View\n                                    "),
                         _c(
                           "svg",
                           {
@@ -22171,75 +22549,44 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      {
-                        staticClass:
-                          "text-gray-600 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-300"
-                      },
-                      [
-                        _c(
-                          "svg",
+                    searchResult.id.channelId !== null
+                      ? _c(
+                          "a",
                           {
-                            staticClass: "w-4 h-4 mr-1",
+                            staticClass:
+                              "text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0",
                             attrs: {
-                              stroke: "currentColor",
-                              "stroke-width": "2",
-                              fill: "none",
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              viewBox: "0 0 24 24"
+                              href: _vm.getVideosUrlChannel(
+                                searchResult.id.channelId
+                              )
                             }
                           },
                           [
-                            _c("path", {
-                              attrs: {
-                                d:
-                                  "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("circle", {
-                              attrs: { cx: "12", cy: "12", r: "3" }
-                            })
+                            _vm._v(
+                              " View channel videos\n                                    "
+                            ),
+                            _c(
+                              "svg",
+                              {
+                                staticClass: "w-4 h-4 ml-2",
+                                attrs: {
+                                  viewBox: "0 0 24 24",
+                                  stroke: "currentColor",
+                                  "stroke-width": "2",
+                                  fill: "none",
+                                  "stroke-linecap": "round",
+                                  "stroke-linejoin": "round"
+                                }
+                              },
+                              [
+                                _c("path", { attrs: { d: "M5 12h14" } }),
+                                _vm._v(" "),
+                                _c("path", { attrs: { d: "M12 5l7 7-7 7" } })
+                              ]
+                            )
                           ]
-                        ),
-                        _vm._v("1.2K\n          ")
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      {
-                        staticClass:
-                          "text-gray-600 inline-flex items-center leading-none text-sm"
-                      },
-                      [
-                        _c(
-                          "svg",
-                          {
-                            staticClass: "w-4 h-4 mr-1",
-                            attrs: {
-                              stroke: "currentColor",
-                              "stroke-width": "2",
-                              fill: "none",
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              viewBox: "0 0 24 24"
-                            }
-                          },
-                          [
-                            _c("path", {
-                              attrs: {
-                                d:
-                                  "M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v("6\n          ")
-                      ]
-                    )
+                        )
+                      : _vm._e()
                   ])
                 ])
               ]
@@ -38778,6 +39125,7 @@ Vue.component('search-videoLicense', __webpack_require__(/*! ./components/search
 Vue.component('search-videoSyndicated', __webpack_require__(/*! ./components/search/VideoSyndicated.vue */ "./resources/js/components/search/VideoSyndicated.vue")["default"]);
 Vue.component('search-videoType', __webpack_require__(/*! ./components/search/VideoType.vue */ "./resources/js/components/search/VideoType.vue")["default"]);
 Vue.component('search-channel', __webpack_require__(/*! ./components/ChannelSearch.vue */ "./resources/js/components/ChannelSearch.vue")["default"]);
+Vue.component('search-playlist', __webpack_require__(/*! ./components/PlaylistSearch.vue */ "./resources/js/components/PlaylistSearch.vue")["default"]);
 Vue.component('search-results', __webpack_require__(/*! ./components/SearchResults.vue */ "./resources/js/components/SearchResults.vue")["default"]);
 var app = new Vue({
   el: '#app'
@@ -38915,6 +39263,75 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 component.options.__file = "resources/js/components/DynamicSearchFields.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/PlaylistSearch.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/PlaylistSearch.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PlaylistSearch_vue_vue_type_template_id_754d7c45___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PlaylistSearch.vue?vue&type=template&id=754d7c45& */ "./resources/js/components/PlaylistSearch.vue?vue&type=template&id=754d7c45&");
+/* harmony import */ var _PlaylistSearch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PlaylistSearch.vue?vue&type=script&lang=js& */ "./resources/js/components/PlaylistSearch.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PlaylistSearch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PlaylistSearch_vue_vue_type_template_id_754d7c45___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PlaylistSearch_vue_vue_type_template_id_754d7c45___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/PlaylistSearch.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/PlaylistSearch.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/PlaylistSearch.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PlaylistSearch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./PlaylistSearch.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlaylistSearch.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PlaylistSearch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PlaylistSearch.vue?vue&type=template&id=754d7c45&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/PlaylistSearch.vue?vue&type=template&id=754d7c45& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlaylistSearch_vue_vue_type_template_id_754d7c45___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./PlaylistSearch.vue?vue&type=template&id=754d7c45& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PlaylistSearch.vue?vue&type=template&id=754d7c45&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlaylistSearch_vue_vue_type_template_id_754d7c45___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlaylistSearch_vue_vue_type_template_id_754d7c45___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

@@ -16,6 +16,6 @@ use App\Http\Controllers\testController;
 Route::view('/',"search.video")->name('video');
 //Route::view('/videos',"search.video");
 Route::view('/channels',"search.channel")->name("channel");
-Route::view('/playlist',"search.channel")->name("playlist");
+Route::view('/playlist',"search.playlist")->name("playlist");
 Route::view('/faq',"search.channel")->name("faq");
 Route::get('search',[VideoController::class,'index'])->name('search.index');

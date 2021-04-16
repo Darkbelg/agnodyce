@@ -3,6 +3,15 @@
         <!-- main -->
         <div class="flex justify-center pt-20">
             <div>
+                <ul>
+                    <li v-for="error in errors">
+                        <ul>
+                            <li v-for="message in error">
+                                {{ message }}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
                 <!--                <search-location></search-location>-->
                 <search-q v-model="search"></search-q>
 
@@ -43,6 +52,7 @@ export default {
             rows: [],
             dynamicInputs: [],
             selected: 'order',
+            errors: [],
             options: [
                 {text: 'Order', value: 'order'},
                 {text: 'Maximum Results', value: 'maxResults'},
@@ -99,7 +109,7 @@ export default {
                 }
             });
             if (!document.getElementById('search-maxResults')) {
-                searchQuery += "&maxResults=9"
+                searchQuery += "&maxResults=45"
             }
             this.updateUrl(location.pathname + '?' + searchQuery);
 

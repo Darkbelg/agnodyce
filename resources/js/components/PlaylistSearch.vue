@@ -56,8 +56,6 @@ export default {
                 {text: 'Order', value: 'order'},
                 {text: 'Maximum Results', value: 'maxResults'},
                 {text: 'Channel Id', value: 'channelId'},
-                {text: 'Video Duration', value: 'videoDuration'},
-                {text: 'Event Type', value: 'eventType'},
                 {text: 'Location', value: 'location'},
                 {text: 'Location Radius', value: 'locationRadius'},
                 {text: 'Published After', value: 'publishedAfter'},
@@ -65,15 +63,7 @@ export default {
                 {text: 'Region Code', value: 'regionCode'},
                 {text: 'Relevance Language', value: 'relevanceLanguage'},
                 {text: 'Safe Search', value: 'safeSearch'},
-                {text: 'Topic Id', value: 'topicId'},
-                {text: 'Video Caption', value: 'videoCaption'},
-                {text: 'Video Category Id', value: 'videoCategoryId'},
-                {text: 'Video Definition', value: 'videoDefinition'},
-                {text: 'Video Dimension', value: 'videoDimension'},
-                {text: 'Video Embeddable', value: 'videoEmbeddable'},
-                {text: 'Video License', value: 'videoLicense'},
-                {text: 'Video Syndicated', value: 'videoSyndicated'},
-                {text: 'Video Type', value: 'videoType'},
+                {text: 'Topic Id', value: 'topicId'}
             ],
             fields: [],
             count: 0,
@@ -81,7 +71,7 @@ export default {
     },
     mounted() {
         if (window.location.search !== "") {
-            this.searchApi(location.pathname + 'search' + window.location.search);
+            this.searchApi(location.origin + '/search' + window.location.search);
 
             const urlParams = new URLSearchParams(window.location.search);
 
@@ -102,7 +92,7 @@ export default {
     },
     methods: {
         loadSearchResults() {
-            let searchQuery = 'q=' + encodeURI(this.search) + '&type=video';
+            let searchQuery = 'q=' + encodeURI(this.search) + '&type=playlist';
             this.options.forEach(function (item, index) {
                 //console.log(document.getElementById('search-' + item.value));
                 if (document.getElementById('search-' + item.value)) {
@@ -121,7 +111,7 @@ export default {
             }
             this.updateUrl(location.pathname + '?' + searchQuery);
 
-            this.searchApi(location.pathname + 'search?' + searchQuery);
+            this.searchApi(location.origin + '/search?' + searchQuery);
 
         },
         searchApi(searchUrl) {

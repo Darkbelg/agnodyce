@@ -32,7 +32,7 @@ class SearchRequest extends FormRequest
             ],
             'maxResults' => 'required|max:50|integer',
             'channelId' =>
-                'string|prohibited_unless:type,video',
+                'string|prohibited_if:type,channel',
             'channelType' => [
                 'string',
                 Rule::in(['any', 'show']),

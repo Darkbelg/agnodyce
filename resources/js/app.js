@@ -41,6 +41,8 @@ Vue.component('search-videoType', require('./components/search/VideoType.vue').d
 
 Vue.component('search-channel', require('./components/ChannelSearch.vue').default);
 
+Vue.component('search-playlist', require('./components/PlaylistSearch.vue').default);
+
 Vue.component('search-results', require('./components/SearchResults.vue').default);
 
 const app = new Vue({
