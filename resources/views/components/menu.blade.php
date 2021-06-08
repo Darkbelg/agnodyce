@@ -1,5 +1,5 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
-<nav class="bg-gray-800">
+<nav class="bg-red-800">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
             <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -30,8 +30,9 @@
             </div>
             <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div class="flex-shrink-0 flex items-center">
-                    <img class="block lg:hidden h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
-                    <img class="hidden lg:block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow">
+                    <span class="block h-8 w-auto text-white">Agnodyce</span>
+{{--                    <img class="block lg:hidden h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">--}}
+{{--                    <img class="hidden lg:block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow">--}}
                 </div>
                 <div class="hidden sm:block sm:ml-6">
                     <div class="flex space-x-4">
@@ -42,7 +43,7 @@
 
                         <a href="{{route('playlist')}}" class="{{ request()->is('playlist') ? 'menu-btn-active' : 'menu-btn' }}" {{ request()->is('playlist') ? 'aria-current="page"' : '' }}>Playlists</a>
 
-                        <a href="{{route('faq')}}" class="{{ request()->is('faq') ? 'menu-btn-active' : 'menu-btn' }}" {{ request()->is('faq') ? 'aria-current="page"' : '' }}>FAQ</a>
+{{--                        <a href="{{route('faq')}}" class="{{ request()->is('faq') ? 'menu-btn-active' : 'menu-btn' }}" {{ request()->is('faq') ? 'aria-current="page"' : '' }}>FAQ</a>--}}
                     </div>
                 </div>
             </div>
@@ -53,13 +54,13 @@
     <div class="sm:hidden" id="mobile-menu">
         <div class="px-2 pt-2 pb-3 space-y-1">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Videos</a>
+            <a href="{{route('video')}}" class="{{ request()->is('/') ? 'menu-btn-active' : 'menu-btn' }}" {{ request()->is('video') ? 'aria-current="page"' : '' }}>Videos</a>
 
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Channels</a>
+            <a href="{{route('channel')}}" class="{{ request()->is('channels') ? 'menu-btn-active' : 'menu-btn' }}" {{ request()->is('channels') ? 'aria-current="page"' : '' }}>Channels</a>
 
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Playlists</a>
+            <a href="{{route('playlist')}}" class="{{ request()->is('playlist') ? 'menu-btn-active' : 'menu-btn' }}" {{ request()->is('playlist') ? 'aria-current="page"' : '' }}>Playlists</a>
 
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">FAQ</a>
+{{--            <a href="{{route('faq')}}" class="{{ request()->is('faq') ? 'menu-btn-active' : 'menu-btn' }}" {{ request()->is('faq') ? 'aria-current="page"' : '' }}>FAQ</a>--}}
         </div>
     </div>
 </nav>
