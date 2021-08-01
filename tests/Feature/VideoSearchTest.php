@@ -17,17 +17,17 @@ class VideoSearchTest extends TestCase
         $locationRadius = "5km";
         return [
             [
-                'api/?type=video&location=' . $location . '&maxResults=10',
+                'search?type=video&location=' . $location . '&maxResults=10',
                 422,
                 'locationRadius'
             ],
             [
-                'api/?type=video&maxResults=10&locationRadius=' . $locationRadius,
+                'search?type=video&maxResults=10&locationRadius=' . $locationRadius,
                 422,
                 'location'
             ],
             [
-                'api/?type=video&location=' . $location . '&maxResults=10&locationRadius=' . $locationRadius,
+                'search?type=video&location=' . $location . '&maxResults=10&locationRadius=' . $locationRadius,
                 200,
                 ""
             ]
@@ -40,7 +40,7 @@ class VideoSearchTest extends TestCase
     public function test_search()
     {
         $query = "CL +5 STAR+ Official Video";
-        $response = $this->getJson('api/?q=' . $query . '&maxResults=10&type=video');
+        $response = $this->getJson('search?q=' . $query . '&maxResults=10&type=video');
         $response->assertSee('CL +5 STAR+ Official Video');
     }
 
