@@ -6,7 +6,7 @@
                 {{ option.text }}
             </option>
         </select>
-        <button @click="$emit('delete-row')">Delete</button>
+        <button @click="$emit('delete-row')"><icon-base icon-name="close"><icon-close /></icon-base></button>
     </div>
 </template>
 <script>

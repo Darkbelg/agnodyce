@@ -4,7 +4,7 @@ window.Vue = require('vue');
 
 Vue.component('search-video', require('./components/VideoSearch.vue').default);
 Vue.component('dynamic-search-fields', require('./components/DynamicSearchFields.vue').default);
-
+// Search Input
 Vue.component('search-order',require('./components/search/Order.vue').default);
 Vue.component('search-q',require('./components/search/Q.vue').default);
 Vue.component('search-channelId',require('./components/search/ChannelId.vue').default);
@@ -34,6 +34,10 @@ Vue.component('search-channel', require('./components/ChannelSearch.vue').defaul
 Vue.component('search-playlist', require('./components/PlaylistSearch.vue').default);
 
 Vue.component('search-results', require('./components/SearchResults.vue').default);
+
+//Icons
+Vue.component('icon-base', require('./components/icons/IconBase.vue').default);
+Vue.component('icon-close', require('./components/icons/Close.vue').default);
 
 const app = new Vue({
     el: '#app'

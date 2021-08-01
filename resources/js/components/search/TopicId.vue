@@ -4,7 +4,7 @@
         <div class="flex border border-gray-200 rounded-full p-4 shadow text-xl">
             <input class="w-full outline-none px-3" id="search-topicId" v-model="inputVal" name="search-topicId" type="text">
         </div>
-        <button @click="$emit('delete-row')">Delete</button>
+        <button @click="$emit('delete-row')"><icon-base icon-name="close"><icon-close /></icon-base></button>
     </div>
 </template>
 <script>

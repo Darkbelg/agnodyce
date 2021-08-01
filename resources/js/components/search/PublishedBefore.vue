@@ -2,7 +2,7 @@
     <div>
         <label for="search-publishedBefore">Published Before</label>
         <input name="search-publishedBefore" v-model="inputVal" id="search-publishedBefore" type="date">
-        <button @click="$emit('delete-row')">Delete</button>
+        <button @click="$emit('delete-row')"><icon-base icon-name="close"><icon-close /></icon-base></button>
     </div>
 </template>
 <script>
