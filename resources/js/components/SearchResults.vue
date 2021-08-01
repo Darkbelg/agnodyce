@@ -9,10 +9,8 @@
                         <div class="p-6">
 <!--                            <h2 class="tracking-widest text-xs title-font font-medium text-gray-500 mb-1">-->
 <!--                                CATEGORY</h2>-->
-                            <h1 class="title-font text-lg font-medium text-gray-900 mb-3">{{
-                                    searchResult.snippet.title
-                                }}</h1>
-                            <p class="leading-relaxed mb-3">{{ searchResult.snippet.description }}</p>
+                            <h1 class="title-font text-lg font-medium text-gray-900 mb-3"  v-html="searchResult.snippet.title"></h1>
+                            <p class="leading-relaxed mb-3" v-html="searchResult.snippet.description"></p>
                             <div class="flex items-center flex-wrap ">
                                 <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0"
                                    :href="getUrl(searchResult.id.videoId,searchResult.id.channelId,searchResult.id.playlistId)"> View
