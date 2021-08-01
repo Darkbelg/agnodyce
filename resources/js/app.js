@@ -1,16 +1,6 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-// import GoogleMapsApiLoader from 'google-maps-api-loader'
-// Vue.use('GoogleMapsApiLoader')
-
-import * as VueGoogleMaps from "vue2-google-maps";
-Vue.use(VueGoogleMaps, {
-    load: {
-        key: "AIzaSyDU1r1giBu3_hfGewXk6x78-NgLv1YLy9s",
-    },
-    installComponents: true,
-});
 
 Vue.component('search-video', require('./components/VideoSearch.vue').default);
 Vue.component('dynamic-search-fields', require('./components/DynamicSearchFields.vue').default);
