@@ -35,6 +35,8 @@ Vue.component('search-playlist', require('./components/PlaylistSearch.vue').defa
 
 Vue.component('search-results', require('./components/SearchResults.vue').default);
 
+Vue.component('video-detail', require('./components/VideoDetail.vue').default);
+
 //Icons
 Vue.component('icon-base', require('./components/icons/IconBase.vue').default);
 Vue.component('icon-close', require('./components/icons/Close.vue').default);

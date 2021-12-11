@@ -19,3 +19,4 @@ Route::view('/channels',"search.channel")->name("channel");
 Route::view('/playlist',"search.playlist")->name("playlist");
 Route::view('/faq',"search.channel")->name("faq");
 Route::get('search',[VideoController::class,'index'])->name('search.index');
+Route::get('/videos/{video}',[VideoController::class,'show'])->name('videos.show');
