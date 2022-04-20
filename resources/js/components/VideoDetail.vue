@@ -87,7 +87,7 @@ export default {
                     // this.statistics.likes = response.data.likeCount;
                     // this.statistics.dislikes = response.data.dislikeCount;
                     // this.statistics.comments = response.data.commentCount;
-                    //console.log(this.statistics);
+                    console.log(this.statistics);
                 } else {
                     return "views not found";
                 }
