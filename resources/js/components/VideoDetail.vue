@@ -9,7 +9,9 @@
                 <p class="leading-relaxed mb-3" v-html="this.searchResult.snippet.description"></p>
                 <div class="flex items-center flex-wrap ">
                     <ul v-for="(statistic,name) in statistics">
-                        <li class="mr-1">{{name}}: {{ statistic }}</li>
+                        <li v-if="name !== 'dislikeCount' && name !== 'favoriteCount'" class="mr-1">
+                            {{name}}: {{ new Intl.NumberFormat().format(statistic) }}
+                        </li>
                     </ul>
                     <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0"
                        :href="getUrl(this.searchResult.id.videoId,this.searchResult.id.channelId,this.searchResult.id.playlistId)"> View
@@ -56,7 +58,13 @@ export default {
     props: ['searchResult'],
     data() {
         return {
-            statistics: {}
+            statistics: {
+                commentCount: Number,
+                dislikeCount: null,
+                favoriteCount: Number,
+                likeCount: Number,
+                viewCount: Number,
+            }
         }
     },
     mounted() {
@@ -87,7 +95,7 @@ export default {
                     // this.statistics.likes = response.data.likeCount;
                     // this.statistics.dislikes = response.data.dislikeCount;
                     // this.statistics.comments = response.data.commentCount;
-                    console.log(this.statistics);
+                    // console.log(this.statistics);
                 } else {
                     return "views not found";
                 }
