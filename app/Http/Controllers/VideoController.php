@@ -9,6 +9,8 @@ use App\Service\Youtube\Search;
 use App\Service\Youtube\Videos;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,14 +22,19 @@ class VideoController extends Controller
      */
     public function index(SearchRequest $request)
     {
-        $searchResults = (new Search())->listSearch('id,snippet', $request->validated());
-
+        $searchResults = Cache::remember(Hash::make(implode($request->validated())), 60 * 5,
+            function () use ($request) {
+                return (new Search())->listSearch('id,snippet', $request->validated());
+            });
         return response()->json($searchResults);
     }
 
-    public function show(Request $request,$video)
+    public function show(Request $request, $videoId)
     {
-        $videoDetails = (new Videos())->listVideos('statistics', ['id' => $video]);
+        $videoDetails = Cache::remember($videoId, 60 * 5,
+            function () use ($videoId) {
+                return (new Videos())->listVideos('statistics', ['id' => $videoId]);
+            });
 
         return response()->json($videoDetails->items[0]->statistics);
     }
