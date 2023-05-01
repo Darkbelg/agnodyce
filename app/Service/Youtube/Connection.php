@@ -2,8 +2,8 @@
 
 namespace App\Service\Youtube;
 
-use Google_Client;
-use Google_Service_YouTube;
+use Google\Client;
+use Google\Service\YouTube;
 
 /**
  * Class YoutubeApi
@@ -17,12 +17,12 @@ class Connection
 
     public function __construct()
     {
-        $client = new Google_Client();
+        $client = new Client();
         $client->setApplicationName(config("youtube.api.name"));
         $client->setDeveloperKey(config("youtube.api.key"));
 
         // Define service object for making API requests.
-        $this->service = new Google_Service_YouTube($client);
+        $this->service = new YouTube($client);
     }
 
     public function get()

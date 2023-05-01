@@ -7,6 +7,7 @@ use App\Http\Requests\SearchRequest;
 use App\Http\Requests\VideoRequest;
 use App\Service\Youtube\Search;
 use App\Service\Youtube\Videos;
+use App\Services\YoutubeAPI;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
@@ -24,7 +25,7 @@ class VideoController extends Controller
     {
         $searchResults = Cache::remember(Hash::make(implode($request->validated())), 60 * 5,
             function () use ($request) {
-                return (new Search())->listSearch('id,snippet', $request->validated());
+                return (new YoutubeAPI())->search->listSearch('id,snippet', $request->validated());
             });
         return response()->json($searchResults);
     }
@@ -33,7 +34,7 @@ class VideoController extends Controller
     {
         $videoDetails = Cache::remember($videoId, 60 * 5,
             function () use ($videoId) {
-                return (new Videos())->listVideos('statistics', ['id' => $videoId]);
+                return (new YoutubeAPI())->videos->listVideos('statistics', ['id' => $videoId]);
             });
 
         return response()->json($videoDetails->items[0]->statistics);
